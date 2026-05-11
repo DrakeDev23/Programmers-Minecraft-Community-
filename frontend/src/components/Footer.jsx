@@ -1,3 +1,28 @@
+import { useEffect, useRef, useState } from "react";
+
+function useScrollReveal(threshold = 0.15, rootMargin = "0px 0px -60px 0px") {
+    const ref = useRef(null);
+    const [isVisible, setIsVisible] = useState(false);
+
+    useEffect(() => {
+        const el = ref.current;
+        if (!el) return;
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                if (entry.isIntersecting) {
+                    setIsVisible(true);
+                    observer.disconnect();
+                }
+            },
+            { threshold, rootMargin }
+        );
+        observer.observe(el);
+        return () => observer.disconnect();
+    }, [threshold, rootMargin]);
+
+    return [ref, isVisible];
+}
+
 function DiscordIcon() {
     return (
         <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
@@ -23,18 +48,26 @@ function TwitterIcon() {
 }
 
 export default function Footer() {
+    const [ref, visible] = useScrollReveal(0.08);
+
+    const fadeUp = (delay = 0) => ({
+        opacity: visible ? 1 : 0,
+        transform: visible ? "translateY(0)" : "translateY(24px)",
+        transition: `opacity 0.65s ease ${delay}s, transform 0.65s ease ${delay}s`,
+    });
+
     return (
-        <footer className="border-t border-white/10 bg-black/60 backdrop-blur-md">
+        <footer className="border-t border-white/10 bg-black/60 backdrop-blur-md" ref={ref}>
             <div className="mx-auto max-w-6xl px-6">
                 <div className="flex flex-col gap-12 border-b border-white/10 py-16 md:flex-row md:justify-between">
-                    <div>
+                    <div style={fadeUp(0)}>
                         <span className="mb-3 block font-serif text-lg font-bold text-white">Null SMP</span>
                         <p className="max-w-[200px] text-sm leading-relaxed text-white/40">
                             A Minecraft server for people who write code
                         </p>
                     </div>
 
-                    <div className="flex gap-16">
+                    <div className="flex gap-16" style={fadeUp(0.15)}>
                         <div>
                             <h4 className="mb-5 text-[10px] font-semibold uppercase tracking-[0.14em] text-white/30">Navigate</h4>
                             <ul className="space-y-3 list-none">
@@ -59,18 +92,12 @@ export default function Footer() {
                     </div>
                 </div>
 
-                <div className="flex flex-col items-start gap-4 py-6 sm:flex-row sm:items-center sm:justify-between">
+                <div className="flex flex-col items-start gap-4 py-6 sm:flex-row sm:items-center sm:justify-between" style={fadeUp(0.25)}>
                     <p className="text-xs text-white/30">2025 Null SMP. All rights reserved.</p>
                     <div className="flex items-center gap-5">
-                        <a href="https://discord.gg/yourlink" target="_blank" rel="noreferrer" className="text-white/30 transition-colors hover:text-white">
-                            <DiscordIcon />
-                        </a>
-                        <a href="https://github.com/DrakeDev23" target="_blank" rel="noreferrer" className="text-white/30 transition-colors hover:text-white">
-                            <GithubIcon />
-                        </a>
-                        <a href="https://twitter.com" target="_blank" rel="noreferrer" className="text-white/30 transition-colors hover:text-white">
-                            <TwitterIcon />
-                        </a>
+                        <a href="https://discord.gg/yourlink" target="_blank" rel="noreferrer" className="text-white/30 transition-colors hover:text-white"><DiscordIcon /></a>
+                        <a href="https://github.com/DrakeDev23" target="_blank" rel="noreferrer" className="text-white/30 transition-colors hover:text-white"><GithubIcon /></a>
+                        <a href="https://twitter.com" target="_blank" rel="noreferrer" className="text-white/30 transition-colors hover:text-white"><TwitterIcon /></a>
                     </div>
                 </div>
             </div>
