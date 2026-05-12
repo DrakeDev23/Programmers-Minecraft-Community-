@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Header from './components/Header'
 import Section from './components/Section'
@@ -9,6 +10,13 @@ import AdminDashboard from './components/admin/AdminDashboard'
 import './App.css'
 
 function MainSite() {
+  useEffect(() => {
+    window.focus();
+    document.body.tabIndex = 0;
+    document.body.focus();
+    document.body.tabIndex = -1;
+  }, []);
+
   return (
     <div className="app">
       <Header name="Null SMP" />

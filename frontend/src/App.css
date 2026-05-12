@@ -1,19 +1,28 @@
+html,
+body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+  outline: none;
+}
+
 .app {
-  position: relative;
   min-height: 100vh;
   background-image: url("./assets/bg.png");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  overflow: hidden;
+  overflow-x: hidden;
 }
 
 .app::before {
   content: "";
-  position: absolute;
+  position: fixed;
   inset: 0;
   background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0) 40%, rgba(0, 0, 0, 0.6) 100%);
   pointer-events: none;
+  z-index: 0;
 }
 
 .app>* {

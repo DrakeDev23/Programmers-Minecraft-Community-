@@ -286,7 +286,6 @@ export default function AdminDashboard() {
             display: "flex", minHeight: "100vh", background: "#080808",
             opacity: visible ? 1 : 0, transition: "opacity 0.5s ease",
         }}>
-            {/* Sidebar */}
             <aside style={{
                 width: "220px", flexShrink: 0, borderRight: "1px solid rgba(255,255,255,0.07)",
                 background: "rgba(0,0,0,0.6)", display: "flex", flexDirection: "column",

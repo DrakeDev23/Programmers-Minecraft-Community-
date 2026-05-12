@@ -7,7 +7,6 @@ export default function Header({ name }) {
     const timer = useRef(null);
 
     useEffect(() => {
-        // Slight delay so the animation feels intentional
         const t = setTimeout(() => setVisible(true), 80);
         return () => clearTimeout(t);
     }, []);
@@ -47,8 +46,16 @@ export default function Header({ name }) {
 
     return (
         <header
-            className="fixed top-0 left-0 right-0 z-50 border-b border-white/10 bg-black/30 backdrop-blur-md"
             style={{
+                position: "fixed",
+                top: 0,
+                left: 0,
+                right: 0,
+                zIndex: 9999,
+                borderBottom: "1px solid rgba(255,255,255,0.1)",
+                background: "rgba(0,0,0,0.3)",
+                backdropFilter: "blur(12px)",
+                WebkitBackdropFilter: "blur(12px)",
                 opacity: visible ? 1 : 0,
                 transform: visible ? "translateY(0)" : "translateY(-18px)",
                 transition: "opacity 0.6s ease, transform 0.6s ease",
@@ -58,30 +65,14 @@ export default function Header({ name }) {
                 <span
                     onClick={handleLogoClick}
                     className="cursor-pointer select-none font-serif text-xl font-bold text-white"
-                    style={{
-                        opacity: visible ? 1 : 0,
-                        transform: visible ? "translateY(0)" : "translateY(-8px)",
-                        transition: "opacity 0.6s ease 0.15s, transform 0.6s ease 0.15s",
-                    }}
                 >
                     {name}
                 </span>
 
-                <nav
-                    className="hidden items-center gap-8 md:flex"
-                    style={{
-                        opacity: visible ? 1 : 0,
-                        transform: visible ? "translateY(0)" : "translateY(-8px)",
-                        transition: "opacity 0.6s ease 0.25s, transform 0.6s ease 0.25s",
-                    }}
-                >
+                <nav className="hidden items-center gap-8 md:flex">
                     <ul className="flex items-center gap-8 list-none">
-                        {["home", "about", "rules", "updates", "team"].map((l, i) => (
-                            <li key={l} style={{
-                                opacity: visible ? 1 : 0,
-                                transform: visible ? "translateY(0)" : "translateY(-6px)",
-                                transition: `opacity 0.5s ease ${0.3 + i * 0.07}s, transform 0.5s ease ${0.3 + i * 0.07}s`,
-                            }}>
+                        {links.map((l) => (
+                            <li key={l}>
                                 <a
                                     href="#"
                                     onClick={(e) => { e.preventDefault(); scrollTo(l); }}
@@ -99,11 +90,6 @@ export default function Header({ name }) {
                     target="_blank"
                     rel="noreferrer"
                     className="hidden rounded bg-green-700 px-5 py-2 text-xs font-semibold uppercase tracking-widest text-white transition-colors hover:bg-green-800 md:block"
-                    style={{
-                        opacity: visible ? 1 : 0,
-                        transform: visible ? "translateY(0)" : "translateY(-8px)",
-                        transition: "opacity 0.6s ease 0.65s, transform 0.6s ease 0.65s",
-                    }}
                 >
                     Join
                 </a>
@@ -124,11 +110,24 @@ export default function Header({ name }) {
                 <ul className="flex flex-col items-center gap-6 py-8 list-none">
                     {links.map((l) => (
                         <li key={l}>
-                            <a href="#" onClick={(e) => { e.preventDefault(); scrollTo(l); }} className="text-xs font-medium uppercase tracking-widest text-white/60 transition-colors hover:text-white">{l}</a>
+                            <a
+                                href="#"
+                                onClick={(e) => { e.preventDefault(); scrollTo(l); }}
+                                className="text-xs font-medium uppercase tracking-widest text-white/60 transition-colors hover:text-white"
+                            >
+                                {l}
+                            </a>
                         </li>
                     ))}
                     <li>
-                        <a href="https://discord.gg/yourlink" target="_blank" rel="noreferrer" className="rounded bg-green-700 px-6 py-2.5 text-xs font-semibold uppercase tracking-widest text-white">Join</a>
+                        <a
+                            href="https://discord.gg/yourlink"
+                            target="_blank"
+                            rel="noreferrer"
+                            className="rounded bg-green-700 px-6 py-2.5 text-xs font-semibold uppercase tracking-widest text-white"
+                        >
+                            Join
+                        </a>
                     </li>
                 </ul>
             </div>
