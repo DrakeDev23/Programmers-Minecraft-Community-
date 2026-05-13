@@ -1,8 +1,10 @@
+import { useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Header from './components/Header'
 import Section from './components/Section'
 import About from './components/About'
 import Rules from './components/Rules'
+import Updates from './components/Updates'
 import Footer from './components/Footer'
 import AdminLogin from './components/admin/AdminLogin'
 import AdminDashboard from './components/admin/AdminDashboard'
@@ -15,6 +17,7 @@ function MainSite() {
       <Section />
       <About />
       <Rules />
+      <Updates />
       <Footer />
     </div>
   );
