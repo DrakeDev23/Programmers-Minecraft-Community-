@@ -89,10 +89,7 @@ export default function AdminLogin() {
                     <p className="text-[11px] uppercase tracking-[0.18em] text-white/30">Admin Access</p>
                 </div>
 
-                <div
-                    className="rounded-lg border border-white/10 bg-white/[0.03] p-8 backdrop-blur-sm"
-                    style={fadeUp(0.2)}
-                >
+                <div className="rounded-lg border border-white/10 p-8 backdrop-blur-sm" style={{ ...fadeUp(0.2), background: "rgba(255,255,255,0.03)" }}>
                     <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
                         <div>
                             <label className="mb-2 block text-[10px] font-semibold uppercase tracking-widest text-white/30">

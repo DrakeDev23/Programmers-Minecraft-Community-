@@ -28,7 +28,7 @@ export default function Header({ name }) {
         setOpen(false);
     };
 
-    const links = ["home", "about", "rules", "updates", "team"];
+    const links = ["home", "about", "rules", "updates"];
 
     const barStyle = (pos) => ({
         display: "block",
