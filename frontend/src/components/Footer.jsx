@@ -71,8 +71,8 @@ export default function Footer() {
                         <div>
                             <h4 className="mb-5 text-[10px] font-semibold uppercase tracking-[0.14em] text-white/30">Navigate</h4>
                             <ul className="space-y-3 list-none">
-                                {["home", "about", "rules", "updates", "team"].map((l) => (
-                                    <li key={l}>
+                                {["home", "about", "rules", "updates"].map((l) => (
+                                    < li key={l} >
                                         <a href={`#${l}`} className="text-sm capitalize text-white/50 transition-colors hover:text-white">
                                             {l.charAt(0).toUpperCase() + l.slice(1)}
                                         </a>
@@ -101,6 +101,6 @@ export default function Footer() {
                     </div>
                 </div>
             </div>
-        </footer>
+        </footer >
     );
 }
