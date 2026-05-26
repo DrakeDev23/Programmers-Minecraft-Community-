@@ -1,8 +1,8 @@
 <?php
 define('DB_HOST',    'localhost');
 define('DB_NAME',    'null_smp');
-define('DB_USER',    'your_db_user');     
-define('DB_PASS',    'your_db_password'); 
+define('DB_USER',    'nullsmp');  
+define('DB_PASS',    'nullsmp123');     
 define('DB_CHARSET', 'utf8mb4');
 
 function getDB(): PDO {
