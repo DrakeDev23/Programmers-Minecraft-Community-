@@ -1,6 +1,5 @@
 <?php
-// includes/cors.php
-// Allow your Vite dev server. Change this to your production domain when deploying.
+
 $allowed = 'http://localhost:5173';
 
 header("Access-Control-Allow-Origin: $allowed");
@@ -9,7 +8,6 @@ header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
 header('Access-Control-Allow-Headers: Content-Type, X-CSRF-Token');
 header('Content-Type: application/json; charset=utf-8');
 
-// Preflight – browsers send OPTIONS first for cross-origin requests
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     http_response_code(204);
     exit;
