@@ -55,7 +55,6 @@ INSERT IGNORE INTO members (username, role, is_active, joined_at) VALUES
 ('stackpixel', 'Member', 1, '2024-05-08'),
 ('rustling',   'Member', 1, '2024-06-01');
 
--- Seed whitelist applications
 INSERT IGNORE INTO whitelist_applications (username, note, status, applied_at) VALUES
 ('codebreaker99', 'Full-stack dev, loves redstone automation', 'pending', '2025-05-09'),
 ('pixelforge',    'Game dev, plays since 2012',                'pending', '2025-05-08'),
