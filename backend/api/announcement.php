@@ -1,16 +1,12 @@
 <?php
-// api/announcements.php
 require_once __DIR__ . '/../includes/cors.php';
 require_once __DIR__ . '/../includes/auth.php';
 
 $method = $_SERVER['REQUEST_METHOD'];
 $pdo    = getDB();
 
-// GET is public (the main site reads announcements without logging in)
-// All write operations require auth
 if ($method !== 'GET') requireAuth();
 
-// GET /api/announcements.php  – list all (newest first)
 if ($method === 'GET') {
     $rows = $pdo->query(
         'SELECT id, title, message, tag, is_edited, created_at FROM announcements ORDER BY created_at DESC'
@@ -28,7 +24,6 @@ if ($method === 'GET') {
     json_ok($items);
 }
 
-// POST /api/announcements.php  – create
 if ($method === 'POST') {
     $b     = body();
     $title = trim($b['title'] ?? 'Untitled');
@@ -50,7 +45,6 @@ if ($method === 'POST') {
     json_ok(['id' => $newId, 'date' => date('M j, Y g:i A')], 201);
 }
 
-// PUT /api/announcements.php?id=X  – edit
 if ($method === 'PUT') {
     $id    = (int) ($_GET['id'] ?? 0);
     $b     = body();
@@ -71,7 +65,6 @@ if ($method === 'PUT') {
     json_ok('Updated.');
 }
 
-// DELETE /api/announcements.php?id=X
 if ($method === 'DELETE') {
     $id = (int) ($_GET['id'] ?? 0);
     if (!$id) json_err('ID required.');
