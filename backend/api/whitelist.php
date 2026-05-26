@@ -1,16 +1,12 @@
 <?php
-// api/whitelist.php
 require_once __DIR__ . '/../includes/cors.php';
 require_once __DIR__ . '/../includes/auth.php';
 
 $method = $_SERVER['REQUEST_METHOD'];
 $pdo    = getDB();
 
-// GET is semi-public (you could lock it down too — just add requireAuth() at top)
 if ($method !== 'GET') requireAuth();
 
-// GET /api/whitelist.php               – pending applications
-// GET /api/whitelist.php?status=all    – all applications
 if ($method === 'GET') {
     $status = $_GET['status'] ?? 'pending';
     if ($status === 'all') {
@@ -36,7 +32,6 @@ if ($method === 'GET') {
     json_ok($items);
 }
 
-// POST /api/whitelist.php  – submit a new application (public, from main site)
 if ($method === 'POST') {
     $b        = body();
     $username = trim($b['username'] ?? '');
@@ -46,7 +41,6 @@ if ($method === 'POST') {
     if (strlen($username) > 64) json_err('Username too long.');
     if (strlen($note) > 1000)   json_err('Note too long.');
 
-    // Prevent duplicate pending applications
     $check = $pdo->prepare(
         'SELECT id FROM whitelist_applications WHERE username = ? AND status = "pending" LIMIT 1'
     );
@@ -60,7 +54,6 @@ if ($method === 'POST') {
     json_ok('Application submitted.', 201);
 }
 
-// PUT /api/whitelist.php?id=X&action=accept|deny  – resolve an application
 if ($method === 'PUT') {
     requireAuth();
     $id     = (int) ($_GET['id']     ?? 0);
@@ -80,7 +73,6 @@ if ($method === 'PUT') {
     $pdo->prepare('UPDATE whitelist_applications SET status = ?, resolved_at = NOW() WHERE id = ?')
         ->execute([$newStatus, $id]);
 
-    // If accepted, also add to members table
     if ($action === 'accept') {
         $pdo->prepare(
             'INSERT IGNORE INTO members (username, role, joined_at) VALUES (?, "Member", NOW())'
@@ -90,7 +82,6 @@ if ($method === 'PUT') {
     json_ok(['status' => $newStatus]);
 }
 
-// DELETE /api/whitelist.php?id=X  – hard-delete an application
 if ($method === 'DELETE') {
     $id = (int) ($_GET['id'] ?? 0);
     if (!$id) json_err('ID required.');
