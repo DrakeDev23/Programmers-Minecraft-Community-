@@ -1,5 +1,4 @@
 <?php
-// api/members.php
 require_once __DIR__ . '/../includes/cors.php';
 require_once __DIR__ . '/../includes/auth.php';
 
@@ -8,7 +7,6 @@ requireAuth();
 $method = $_SERVER['REQUEST_METHOD'];
 $pdo    = getDB();
 
-// GET /api/members.php  – list all members
 if ($method === 'GET') {
     $rows = $pdo->query(
         'SELECT id, username, role, joined_at, is_active FROM members ORDER BY joined_at ASC'
@@ -25,7 +23,6 @@ if ($method === 'GET') {
     json_ok($members);
 }
 
-// PUT /api/members.php?action=toggle&id=X  – toggle active status
 if ($method === 'PUT') {
     $action = $_GET['action'] ?? '';
     $id     = (int) ($_GET['id'] ?? 0);
@@ -42,7 +39,6 @@ if ($method === 'PUT') {
     }
 }
 
-// DELETE /api/members.php?id=X  – kick (remove) a member (non-owners only)
 if ($method === 'DELETE') {
     $id = (int) ($_GET['id'] ?? 0);
     if (!$id) json_err('Member ID required.');
