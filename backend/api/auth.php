@@ -1,12 +1,10 @@
 <?php
-// api/auth.php
 require_once __DIR__ . '/../includes/cors.php';
 require_once __DIR__ . '/../includes/auth.php';
 
 $method = $_SERVER['REQUEST_METHOD'];
 $action = $_GET['action'] ?? '';
 
-// POST /api/auth.php?action=login
 if ($method === 'POST' && $action === 'login') {
     $body     = body();
     $username = trim($body['username'] ?? '');
@@ -24,7 +22,6 @@ if ($method === 'POST' && $action === 'login') {
     json_ok(['name' => $result['name'], 'username' => $result['username']]);
 }
 
-// POST /api/auth.php?action=logout
 if ($method === 'POST' && $action === 'logout') {
     startSecureSession();
     session_unset();
@@ -32,7 +29,6 @@ if ($method === 'POST' && $action === 'logout') {
     json_ok('Logged out.');
 }
 
-// GET /api/auth.php?action=me  – check if session is active
 if ($method === 'GET' && $action === 'me') {
     if (!isLoggedIn()) json_err('Not authenticated', 401);
     json_ok([
