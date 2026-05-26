@@ -1,11 +1,9 @@
 <?php
-// includes/auth.php
 require_once __DIR__ . '/db.php';
 
 ini_set('session.cookie_httponly', 1);
-ini_set('session.cookie_samesite', 'Lax'); // Lax works for cross-origin with credentials
+ini_set('session.cookie_samesite', 'Lax'); 
 ini_set('session.use_strict_mode', 1);
-// NOTE: cookie_secure should be 1 in production (HTTPS). Keep 0 for localhost dev.
 ini_set('session.cookie_secure', 0);
 
 const MAX_ATTEMPTS    = 5;
@@ -37,7 +35,6 @@ function requireAuth(): void {
     }
 }
 
-// --- Rate limiting (file-based) ---
 function rlFile(string $ip): string {
     return sys_get_temp_dir() . '/nullsmp_rl_' . md5($ip) . '.json';
 }
