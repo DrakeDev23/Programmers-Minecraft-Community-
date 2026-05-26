@@ -1,0 +1,61 @@
+<?php
+// api/members.php
+require_once __DIR__ . '/../includes/cors.php';
+require_once __DIR__ . '/../includes/auth.php';
+
+requireAuth();
+
+$method = $_SERVER['REQUEST_METHOD'];
+$pdo    = getDB();
+
+// GET /api/members.php  – list all members
+if ($method === 'GET') {
+    $rows = $pdo->query(
+        'SELECT id, username, role, joined_at, is_active FROM members ORDER BY joined_at ASC'
+    )->fetchAll();
+
+    $members = array_map(fn($r) => [
+        'id'      => $r['id'],
+        'name'    => $r['username'],
+        'role'    => $r['role'],
+        'joined'  => date('Y-m-d', strtotime($r['joined_at'])),
+        'active'  => (bool) $r['is_active'],
+    ], $rows);
+
+    json_ok($members);
+}
+
+// PUT /api/members.php?action=toggle&id=X  – toggle active status
+if ($method === 'PUT') {
+    $action = $_GET['action'] ?? '';
+    $id     = (int) ($_GET['id'] ?? 0);
+
+    if ($action === 'toggle' && $id) {
+        $stmt = $pdo->prepare('SELECT is_active, role FROM members WHERE id = ?');
+        $stmt->execute([$id]);
+        $member = $stmt->fetch();
+        if (!$member) json_err('Member not found.', 404);
+
+        $newStatus = $member['is_active'] ? 0 : 1;
+        $pdo->prepare('UPDATE members SET is_active = ? WHERE id = ?')->execute([$newStatus, $id]);
+        json_ok(['active' => (bool) $newStatus]);
+    }
+}
+
+// DELETE /api/members.php?id=X  – kick (remove) a member (non-owners only)
+if ($method === 'DELETE') {
+    $id = (int) ($_GET['id'] ?? 0);
+    if (!$id) json_err('Member ID required.');
+
+    $stmt = $pdo->prepare('SELECT role FROM members WHERE id = ?');
+    $stmt->execute([$id]);
+    $member = $stmt->fetch();
+
+    if (!$member) json_err('Member not found.', 404);
+    if ($member['role'] === 'Owner') json_err('Cannot remove the owner.', 403);
+
+    $pdo->prepare('DELETE FROM members WHERE id = ?')->execute([$id]);
+    json_ok('Member removed.');
+}
+
+json_err('Method not allowed.', 405);
