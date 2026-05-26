@@ -1,12 +1,8 @@
--- ============================================
--- Null SMP  –  Full Schema
--- Run once: mysql -u root -p < schema.sql
--- ============================================
+
 
 CREATE DATABASE IF NOT EXISTS null_smp CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 USE null_smp;
 
--- Admin accounts
 CREATE TABLE IF NOT EXISTS admin_users (
     id           INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     username     VARCHAR(64)  NOT NULL UNIQUE,
@@ -18,7 +14,6 @@ CREATE TABLE IF NOT EXISTS admin_users (
     created_at   DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB;
 
--- Server members
 CREATE TABLE IF NOT EXISTS members (
     id         INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     username   VARCHAR(64) NOT NULL UNIQUE,
@@ -27,7 +22,6 @@ CREATE TABLE IF NOT EXISTS members (
     joined_at  DATETIME    NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB;
 
--- Announcements / updates
 CREATE TABLE IF NOT EXISTS announcements (
     id         INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     admin_id   INT UNSIGNED,
@@ -39,7 +33,6 @@ CREATE TABLE IF NOT EXISTS announcements (
     FOREIGN KEY (admin_id) REFERENCES admin_users(id) ON DELETE SET NULL
 ) ENGINE=InnoDB;
 
--- Whitelist applications
 CREATE TABLE IF NOT EXISTS whitelist_applications (
     id          INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     username    VARCHAR(64)  NOT NULL,
@@ -49,16 +42,11 @@ CREATE TABLE IF NOT EXISTS whitelist_applications (
     resolved_at DATETIME
 ) ENGINE=InnoDB;
 
--- ============================================
--- Seed data
--- ============================================
 
--- Default admin  (password: Admin@2025!  ← CHANGE THIS)
 INSERT INTO admin_users (username, password, display_name, email)
 VALUES ('admin', '$2y$12$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'Administrator', 'admin@nullsmp.com')
 ON DUPLICATE KEY UPDATE username = username;
 
--- Seed members matching the original frontend data
 INSERT IGNORE INTO members (username, role, is_active, joined_at) VALUES
 ('drakedev',   'Owner',  1, '2024-01-10'),
 ('veloxn',     'Admin',  1, '2024-02-03'),
