@@ -31,6 +31,7 @@ if ($method === 'POST') {
     $tag   = $b['tag'] ?? 'general';
 
     $allowed_tags = ['general', 'update', 'maintenance', 'event', 'urgent'];
+
     if (!$msg)                          json_err('Message is required.');
     if (!in_array($tag, $allowed_tags)) json_err('Invalid tag.');
     if (strlen($title) > 200)           json_err('Title too long.');
@@ -41,8 +42,7 @@ if ($method === 'POST') {
     );
     $stmt->execute([$title, $msg, $tag, $_SESSION['admin_id']]);
 
-    $newId = (int) $pdo->lastInsertId();
-    json_ok(['id' => $newId, 'date' => date('M j, Y g:i A')], 201);
+    json_ok(['id' => (int) $pdo->lastInsertId(), 'date' => date('M j, Y g:i A')], 201);
 }
 
 if ($method === 'PUT') {
@@ -53,10 +53,17 @@ if ($method === 'PUT') {
 
     if (!$id)  json_err('ID required.');
     if (!$msg) json_err('Message is required.');
+    if (strlen($title) > 200) json_err('Title too long.');
+    if (strlen($msg) > 5000)  json_err('Message too long.');
 
-    $stmt = $pdo->prepare('SELECT id FROM announcements WHERE id = ?');
+    $stmt = $pdo->prepare('SELECT id, admin_id FROM announcements WHERE id = ?');
     $stmt->execute([$id]);
-    if (!$stmt->fetch()) json_err('Not found.', 404);
+    $row = $stmt->fetch();
+
+    if (!$row) json_err('Not found.', 404);
+    if ((int) $row['admin_id'] !== (int) $_SESSION['admin_id']) {
+        json_err('Forbidden.', 403);
+    }
 
     $pdo->prepare(
         'UPDATE announcements SET title = ?, message = ?, is_edited = 1 WHERE id = ?'
@@ -68,6 +75,15 @@ if ($method === 'PUT') {
 if ($method === 'DELETE') {
     $id = (int) ($_GET['id'] ?? 0);
     if (!$id) json_err('ID required.');
+
+    $stmt = $pdo->prepare('SELECT admin_id FROM announcements WHERE id = ?');
+    $stmt->execute([$id]);
+    $row = $stmt->fetch();
+
+    if (!$row) json_err('Not found.', 404);
+    if ((int) $row['admin_id'] !== (int) $_SESSION['admin_id']) {
+        json_err('Forbidden.', 403);
+    }
 
     $pdo->prepare('DELETE FROM announcements WHERE id = ?')->execute([$id]);
     json_ok('Deleted.');

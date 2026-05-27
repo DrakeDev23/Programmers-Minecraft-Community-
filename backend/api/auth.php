@@ -19,7 +19,11 @@ if ($method === 'POST' && $action === 'login') {
         json_err($result['error'], 401);
     }
 
-    json_ok(['name' => $result['name'], 'username' => $result['username']]);
+    json_ok([
+        'name'       => $result['name'],
+        'username'   => $result['username'],
+        'csrf_token' => $result['csrf'],
+    ]);
 }
 
 if ($method === 'POST' && $action === 'logout') {

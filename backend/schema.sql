@@ -1,5 +1,3 @@
-
-
 CREATE DATABASE IF NOT EXISTS null_smp CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 USE null_smp;
 
@@ -41,7 +39,6 @@ CREATE TABLE IF NOT EXISTS whitelist_applications (
     applied_at  DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     resolved_at DATETIME
 ) ENGINE=InnoDB;
-
 
 INSERT INTO admin_users (username, password, display_name, email)
 VALUES ('admin', '$2y$12$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'Administrator', 'admin@nullsmp.com')

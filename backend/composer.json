@@ -1,0 +1,12 @@
+{
+    "name": "archlinux/backend",
+    "authors": [
+        {
+            "name": "DrakeDev23",
+            "email": "maccogoth@gmail.com"
+        }
+    ],
+    "require": {
+        "vlucas/phpdotenv": "^5.6"
+    }
+}

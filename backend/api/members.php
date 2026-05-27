@@ -13,11 +13,11 @@ if ($method === 'GET') {
     )->fetchAll();
 
     $members = array_map(fn($r) => [
-        'id'      => $r['id'],
-        'name'    => $r['username'],
-        'role'    => $r['role'],
-        'joined'  => date('Y-m-d', strtotime($r['joined_at'])),
-        'active'  => (bool) $r['is_active'],
+        'id'     => $r['id'],
+        'name'   => $r['username'],
+        'role'   => $r['role'],
+        'joined' => date('Y-m-d', strtotime($r['joined_at'])),
+        'active' => (bool) $r['is_active'],
     ], $rows);
 
     json_ok($members);
@@ -31,10 +31,14 @@ if ($method === 'PUT') {
         $stmt = $pdo->prepare('SELECT is_active, role FROM members WHERE id = ?');
         $stmt->execute([$id]);
         $member = $stmt->fetch();
+
         if (!$member) json_err('Member not found.', 404);
+        if ($member['role'] === 'Owner') json_err('Cannot deactivate the owner.', 403);
 
         $newStatus = $member['is_active'] ? 0 : 1;
-        $pdo->prepare('UPDATE members SET is_active = ? WHERE id = ?')->execute([$newStatus, $id]);
+        $pdo->prepare('UPDATE members SET is_active = ? WHERE id = ?')
+            ->execute([$newStatus, $id]);
+
         json_ok(['active' => (bool) $newStatus]);
     }
 }

@@ -1,6 +1,5 @@
 <?php
-
-$allowed = 'http://localhost:5173';
+$allowed = $_ENV['CORS_ORIGIN'] ?? 'http://localhost:5173';
 
 header("Access-Control-Allow-Origin: $allowed");
 header('Access-Control-Allow-Credentials: true');
