@@ -100,7 +100,6 @@ function attemptLogin(string $username, string $password): array {
         recordFail($ip, $username);
         return ['ok' => false, 'error' => 'Invalid credentials.'];
     }
-//ds
     clearRL($ip, $username);
     startSecureSession();
     session_regenerate_id(true);
