@@ -35,7 +35,7 @@ function verifyCsrf(): void {
         json_err('Invalid CSRF token.', 403);
     }
 }
-
+//s
 function isLoggedIn(): bool {
     startSecureSession();
     return !empty($_SESSION['admin_id']);
