@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Header from './components/Header'
 import Section from './components/Section'
@@ -8,6 +7,7 @@ import Updates from './components/Updates'
 import Footer from './components/Footer'
 import AdminLogin from './components/admin/AdminLogin'
 import AdminDashboard from './components/admin/AdminDashboard'
+import AdminRoute from './components/admin/AdminRoute'
 import './App.css'
 
 function MainSite() {
@@ -29,7 +29,11 @@ export default function App() {
       <Routes>
         <Route path="/" element={<MainSite />} />
         <Route path="/admin/login" element={<AdminLogin />} />
-        <Route path="/admin/dashboard" element={<AdminDashboard />} />
+        <Route path="/admin/dashboard" element={
+          <AdminRoute>
+            <AdminDashboard />
+          </AdminRoute>
+        } />
       </Routes>
     </BrowserRouter>
   );

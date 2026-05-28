@@ -36,9 +36,10 @@ if ($method === 'POST' && $action === 'logout') {
 if ($method === 'GET' && $action === 'me') {
     if (!isLoggedIn()) json_err('Not authenticated', 401);
     json_ok([
-        'id'       => $_SESSION['admin_id'],
-        'username' => $_SESSION['admin_username'],
-        'name'     => $_SESSION['admin_name'],
+        'id'         => $_SESSION['admin_id'],
+        'username'   => $_SESSION['admin_username'],
+        'name'       => $_SESSION['admin_name'],
+        'csrf_token' => $_SESSION['csrf_token'],
     ]);
 }
 

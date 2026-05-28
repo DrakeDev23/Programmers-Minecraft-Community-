@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { auth } from "../../api/client";
+import { auth, setCsrfToken } from "../../api/client";
 
 export default function AdminLogin() {
     const [visible, setVisible] = useState(false);
@@ -20,7 +20,8 @@ export default function AdminLogin() {
         setError("");
 
         try {
-            await auth.login(username, password);
+            const data = await auth.login(username, password);
+            setCsrfToken(data.csrf_token);
             window.location.href = "/admin/dashboard";
         } catch (err) {
             setLoading(false);

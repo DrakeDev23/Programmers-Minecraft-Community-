@@ -1,10 +1,19 @@
-
 const BASE_URL = 'http://localhost:8000/api';
+
+let csrfToken = '';
+
+export function setCsrfToken(token) {
+    csrfToken = token;
+}
 
 async function request(path, options = {}) {
     const res = await fetch(`${BASE_URL}${path}`, {
         credentials: 'include',
-        headers: { 'Content-Type': 'application/json', ...options.headers },
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-Token': csrfToken,
+            ...options.headers,
+        },
         ...options,
     });
 

@@ -4,7 +4,7 @@ require_once __DIR__ . '/db.php';
 $secure = ($_ENV['APP_ENV'] ?? 'production') !== 'development';
 
 ini_set('session.cookie_httponly', 1);
-ini_set('session.cookie_samesite', 'Lax');
+ini_set('session.cookie_samesite', $secure ? 'None' : 'Lax');
 ini_set('session.use_strict_mode', 1);
 ini_set('session.cookie_secure', $secure ? 1 : 0);
 
@@ -35,6 +35,7 @@ function verifyCsrf(): void {
         json_err('Invalid CSRF token.', 403);
     }
 }
+
 function isLoggedIn(): bool {
     startSecureSession();
     return !empty($_SESSION['admin_id']);
@@ -99,6 +100,7 @@ function attemptLogin(string $username, string $password): array {
         recordFail($ip, $username);
         return ['ok' => false, 'error' => 'Invalid credentials.'];
     }
+
     clearRL($ip, $username);
     startSecureSession();
     session_regenerate_id(true);
