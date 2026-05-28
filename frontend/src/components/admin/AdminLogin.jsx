@@ -63,7 +63,7 @@ export default function AdminLogin() {
                                 style={{ width: "100%", background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: "6px", padding: "11px 14px", color: "rgba(255,255,255,0.85)", fontSize: "14px", outline: "none", transition: "border-color 0.2s ease", boxSizing: "border-box" }}
                                 onFocus={(e) => e.target.style.borderColor = "rgba(34,197,94,0.5)"}
                                 onBlur={(e) => e.target.style.borderColor = "rgba(255,255,255,0.1)"}
-                                placeholder="admin" />
+                                placeholder="Username..." />
                         </div>
                         <div>
                             <label className="mb-2 block text-[10px] font-semibold uppercase tracking-widest text-white/30">Password</label>
@@ -71,7 +71,7 @@ export default function AdminLogin() {
                                 style={{ width: "100%", background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: "6px", padding: "11px 14px", color: "rgba(255,255,255,0.85)", fontSize: "14px", outline: "none", transition: "border-color 0.2s ease", boxSizing: "border-box" }}
                                 onFocus={(e) => e.target.style.borderColor = "rgba(34,197,94,0.5)"}
                                 onBlur={(e) => e.target.style.borderColor = "rgba(255,255,255,0.1)"}
-                                placeholder="••••••••" />
+                                placeholder="Password..." />
                         </div>
 
                         {error && <p className="text-xs text-red-400 tracking-wide">{error}</p>}
